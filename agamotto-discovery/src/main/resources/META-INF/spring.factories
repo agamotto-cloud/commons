@@ -1,0 +1,2 @@
+org.springframework.cloud.client.discovery.EnableDiscoveryClient=\
+org.agamotto.cloud.discovery.AgamottoDiscoveryAutoConfiguration

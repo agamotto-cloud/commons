@@ -1,0 +1,10 @@
+/target/
+/.idea
+/*.iml
+/*/target/
+/*/*.iml
+.settings
+.project
+.vscode
+.classpath
+.factorypath

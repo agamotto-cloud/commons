@@ -14,8 +14,8 @@
 		<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
 	</properties>
 	<parent>
-		<artifactId>agamotto-commons</artifactId>
 		<groupId>org.agamotto.cloud</groupId>
+		<artifactId>agamotto-commons-parent</artifactId>
 		<version>0.0.1</version>
 	</parent>
 
@@ -28,14 +28,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.agamotto.cloud</groupId>
-			<artifactId>agamotto-config</artifactId>
+			<artifactId>agamotto-core</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.agamotto.cloud</groupId>
-			<artifactId>agamotto-discovery</artifactId>
-			<version>0.0.1</version>
-		</dependency>
+
+
+
 
 
 	</dependencies>

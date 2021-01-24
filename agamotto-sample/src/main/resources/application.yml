@@ -1,0 +1,15 @@
+server:
+  port: 8089
+spring:
+  cloud:
+    inetutils:
+      preferred-networks: 192.168.44.*
+    #spring:
+#  cloud:
+ #   agamotto:
+ #     config:
+   #     enabled: true
+  application:
+    name: agamotto-sample
+  config:
+    import: optional:nacos:configserver

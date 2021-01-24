@@ -5,15 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.agamotto.cloud</groupId>
-    <artifactId>agamotto-commons</artifactId>
+    <artifactId>agamotto-commons-parent</artifactId>
     <packaging>pom</packaging>
 
     <version>0.0.1</version>
 
    <modules>
-       <module>agamotto-discovery</module>
-       <module>agamotto-config</module>
+
+       <module>agamotto-core</module>
        <module>agamotto-sample</module>
+       <module>agamotto-util</module>
+
    </modules>
 
 
@@ -27,7 +29,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.3.RELEASE</version>
+        <version>2.4.2</version>
     </parent>
 
     <dependencies>
@@ -64,7 +66,20 @@
                 <artifactId>nacos-client</artifactId>
                 <version>1.4.0</version>
             </dependency>
+            <dependency>
+                <groupId>org.agamotto.cloud</groupId>
+                <artifactId>agamotto-util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.agamotto.cloud</groupId>
+                <artifactId>agamotto-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
         </dependencies>
+
     </dependencyManagement>
 
     <repositories>

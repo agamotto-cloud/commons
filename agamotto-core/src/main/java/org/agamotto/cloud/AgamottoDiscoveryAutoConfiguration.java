@@ -6,6 +6,7 @@ import org.agamotto.cloud.discovery.AgamottoDiscoveryClient;
 import org.agamotto.cloud.serviceregistry.AgamottoServiceInstance;
 import org.agamotto.cloud.serviceregistry.AgamottoServiceRegistration;
 import org.agamotto.cloud.serviceregistry.AgamottoServiceRegistry;
+import org.agamotto.cloud.serviceregistry.TtlScheduler;
 import org.agamotto.cloud.util.ServiceUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -26,18 +27,27 @@ public class AgamottoDiscoveryAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(Config.class)
-    public Config redissonClientConfig(){
+    public Config redissonClientConfig() {
         Config config = new Config();
         config.useSingleServer().setAddress("redis://api.agamotto.cloud:6379")
-        .setPassword("dong19951018");
+                .setPassword("dong19951018");
         config.setCodec(JsonJacksonCodec.INSTANCE);
-        return  config;
+        return config;
     }
 
+    @Bean
+    public TtlScheduler ttlScheduler() {
+        return new TtlScheduler();
+    }
 
     @Bean
-    public RedissonClient redissonClient(Config redissonClientConfig){
-        return  Redisson.create(redissonClientConfig);
+    public RedissonClient redissonClient(Config redissonClientConfig) {
+        try {
+            return Redisson.create(redissonClientConfig);
+        } catch (Exception e) {
+            log.error("redis连接失败", e);
+            throw e;
+        }
     }
 
 
@@ -48,7 +58,7 @@ public class AgamottoDiscoveryAutoConfiguration {
         agamottoServiceInstance.setServiceId(ServiceUtils.getServiceName(environment));
         agamottoServiceInstance.setHost(inetUtils.findFirstNonLoopbackHostInfo().getIpAddress());
         agamottoServiceInstance.setPort(serverProperties.getPort());
-        agamottoServiceInstance.setInstanceId(agamottoServiceInstance.getServiceId()+":"+agamottoServiceInstance.getHost()+":"+agamottoServiceInstance.getPort());
+        agamottoServiceInstance.setInstanceId(agamottoServiceInstance.getServiceId() + ":" + agamottoServiceInstance.getHost() + ":" + agamottoServiceInstance.getPort());
         return agamottoServiceInstance;
     }
 
@@ -64,9 +74,8 @@ public class AgamottoDiscoveryAutoConfiguration {
                                                                    AgamottoServiceRegistry agamottoServiceRegistry,
                                                                    AgamottoServiceInstance agamottoServiceInstance) {
         //实例化服务注册中的实例管理
-        return new AgamottoServiceRegistration(properties, agamottoServiceRegistry,agamottoServiceInstance);
+        return new AgamottoServiceRegistration(properties, agamottoServiceRegistry, agamottoServiceInstance);
     }
-
 
 
     @Bean

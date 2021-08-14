@@ -1,15 +1,21 @@
 package org.agamotto.cloud.discovery;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.agamotto.cloud.config.Constant;
 import org.agamotto.cloud.serviceregistry.AgamottoServiceInstance;
+import org.agamotto.cloud.serviceregistry.TtlScheduler;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 用于获取客户端列表的
@@ -23,43 +29,87 @@ public class AgamottoDiscoveryClient implements DiscoveryClient {
         this.redissonClient = redissonClient;
     }
 
+    private final Map<String, ServiceInstanceMapData> serviceInstanceMap = new ConcurrentHashMap<>();
+
+    private List<String> services = null;
+
+
+    @Autowired
+    private TtlScheduler scheduler;
+
     @Override
     public String description() {
         // log.info("描述");
         return null;
     }
 
+
     @Override
     public List<ServiceInstance> getInstances(String serviceId) {
-        try {
-            try {
-                RMap<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_KEY + ":" + serviceId);
-                if (instanceMap == null || !instanceMap.isExists()) {
-                    return new ArrayList<>();
-                }
-                return new ArrayList<>(instanceMap.values());
-
-            } catch (Exception e) {
-                log.error("注销服务出错", e);
-                throw new RuntimeException(e);
+        if (serviceInstanceMap.containsKey(serviceId)) {
+            ServiceInstanceMapData instances = serviceInstanceMap.get(serviceId);
+            if (instances.time > (System.currentTimeMillis() + Duration.ofMinutes(30).toMillis())) {
+                return instances.serviceInstanceList;
             }
+        }
+        scheduler.add(serviceId + "getInstances", () -> getRemoteInstances(serviceId));
+        return getRemoteInstances(serviceId);
+
+    }
+
+    private List<ServiceInstance> getRemoteInstances(String serviceId) {
+        try {
+            RMap<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_KEY + ":" + serviceId);
+            if (instanceMap == null || !instanceMap.isExists()) {
+                return new ArrayList<>();
+            }
+            ArrayList<ServiceInstance> instanceList = new ArrayList<>();
+            for (AgamottoServiceInstance value : instanceMap.values()) {
+                if (value.getRegistryTimestamp() == null) {
+                    continue;
+                }
+                if ((value.getRegistryTimestamp() + Duration.ofSeconds(30).toMillis()) > System.currentTimeMillis()) {
+                    instanceList.add(value);
+                } else {
+                    instanceMap.remove(value.getInstanceId());
+                }
+            }
+            serviceInstanceMap.put(serviceId, new ServiceInstanceMapData(System.currentTimeMillis(), instanceList));
+            return instanceList;
         } catch (Exception e) {
             log.error("获取服务{}实例列表出错,{}", serviceId, e);
             throw new RuntimeException(e);
         }
     }
 
+
     @Override
     public List<String> getServices() {
+        if (services != null) {
+            return services;
+        }
+        scheduler.add("getServices", this::getRemoteServices);
+        return getRemoteServices();
+    }
+
+    public List<String> getRemoteServices() {
         try {
             RMap<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_KEY + ":list");
             if (instanceMap == null || !instanceMap.isExists()) {
                 return new ArrayList<>();
             }
-            return new ArrayList<>(instanceMap.values());
+            this.services = new ArrayList<>(instanceMap.values());
+            return services;
         } catch (Exception e) {
             log.error("获取服务列表失败", e);
             throw new RuntimeException(e);
         }
     }
+
+    @AllArgsConstructor
+    private static class ServiceInstanceMapData {
+        private Long time;
+        private List<ServiceInstance> serviceInstanceList;
+    }
+
 }

@@ -6,6 +6,7 @@ import org.agamotto.cloud.config.Constant;
 import org.redisson.api.RBucket;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.serviceregistry.ServiceRegistry;
 
 /**
@@ -16,7 +17,9 @@ public class AgamottoServiceRegistry implements ServiceRegistry<AgamottoServiceI
 
     private final RedissonClient redissonClient;
 
-    private AgamottoServiceInstance agamottoServiceInstance;
+
+    @Autowired
+    private TtlScheduler scheduler;
 
     public AgamottoServiceRegistry(RedissonClient redissonClient) {
         this.redissonClient = redissonClient;
@@ -26,7 +29,18 @@ public class AgamottoServiceRegistry implements ServiceRegistry<AgamottoServiceI
     @Override
     public void register(AgamottoServiceInstance agamottoServiceInstance) {
         log.info("注册服务:{}.{},{}", agamottoServiceInstance.getServiceId(), agamottoServiceInstance.getInstanceId(), agamottoServiceInstance);
-        this.agamottoServiceInstance = agamottoServiceInstance;
+        try {
+            updateServiceInfo(agamottoServiceInstance);
+            scheduler.add(agamottoServiceInstance.getInstanceId()+"refister-refresh", () -> {
+                updateServiceInfo(agamottoServiceInstance);
+            });
+        } catch (Exception e) {
+            log.error("注册出错,{}", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void updateServiceInfo(AgamottoServiceInstance agamottoServiceInstance) {
         String serviceId = agamottoServiceInstance.getServiceId();
         try {
             RMap<String, String> serviceMap = redissonClient.getMap(Constant.DISCOVER_KEY + ":list");
@@ -34,17 +48,15 @@ public class AgamottoServiceRegistry implements ServiceRegistry<AgamottoServiceI
                 serviceMap.put(serviceId, serviceId);
             }
             RMap<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_KEY + ":" + serviceId);
-            if (!instanceMap.containsKey(agamottoServiceInstance.getInstanceId())) {
-                agamottoServiceInstance.setRegistryTimestamp(System.currentTimeMillis());
-                instanceMap.put(agamottoServiceInstance.getInstanceId(), agamottoServiceInstance);
-            }
+            agamottoServiceInstance.setRegistryTimestamp(System.currentTimeMillis());
+            instanceMap.put(agamottoServiceInstance.getInstanceId(), agamottoServiceInstance);
+
         } catch (Exception e) {
-            log.error("注册出错,{}", e);
+            log.error("注册出错", e);
             throw new RuntimeException(e);
         }
-
-
     }
+
 
     private void configGateway(String serviceId, String keyPre) {
         RBucket<String> ruleKey = redissonClient.getBucket(keyPre + "/rule");
@@ -64,8 +76,9 @@ public class AgamottoServiceRegistry implements ServiceRegistry<AgamottoServiceI
     @Override
     public void deregister(AgamottoServiceInstance registration) {
         log.info("注销服务{}", registration);
-        String serviceId = agamottoServiceInstance.getServiceId();
+        String serviceId = registration.getServiceId();
         try {
+            scheduler.remove(registration.getInstanceId()+"refister-refresh");
             RMap<String, Long> instanceMap = redissonClient.getMap(Constant.DISCOVER_KEY + ":" + serviceId);
             instanceMap.remove(registration.getInstanceId());
         } catch (Exception e) {

@@ -12,7 +12,7 @@
 
 
 
-    <artifactId>agamotto-core</artifactId>
+    <artifactId>agamotto-discovery</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

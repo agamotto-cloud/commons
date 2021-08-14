@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>org.agamotto.cloud</groupId>
-            <artifactId>agamotto-core</artifactId>
+            <artifactId>agamotto-discovery</artifactId>
             <version>0.0.1</version>
         </dependency>
         <dependency>

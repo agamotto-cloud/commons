@@ -12,7 +12,7 @@
 
    <modules>
 
-       <module>agamotto-core</module>
+       <module>agamotto-discovery</module>
        <module>agamotto-sample</module>
        <module>agamotto-util</module>
        <module>agamotto-starter</module>
@@ -57,7 +57,7 @@
 
             <dependency>
                 <groupId>org.agamotto.cloud</groupId>
-                <artifactId>agamotto-core</artifactId>
+                <artifactId>agamotto-discovery</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

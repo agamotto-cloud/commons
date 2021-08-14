@@ -1,7 +1,7 @@
 package org.agamotto.cloud.config;
 
 import lombok.Data;
-import org.agamotto.cloud.nacos.NacosProperties;
+import org.agamotto.cloud.redis.NacosProperties;
 import org.springframework.boot.context.config.ConfigDataResource;
 import org.springframework.boot.context.config.Profiles;
 import org.springframework.util.StringUtils;

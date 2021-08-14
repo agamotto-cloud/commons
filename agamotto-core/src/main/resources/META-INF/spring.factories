@@ -1,12 +1,3 @@
-
-# Bootstrap components
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.agamotto.cloud.config.AgamottoConfigBootstrapConfiguration
-org.springframework.boot.context.config.ConfigDataLoader=\
-org.agamotto.cloud.config.AgamottoConfigServerConfigDataLoader
-#org.springframework.cloud.bootstrap.BootstrapConfiguration=org.agamotto.cloud.config.NacosConfigServicePropertySourceLocator
-org.springframework.boot.context.config.ConfigDataLocationResolver=\
-org.agamotto.cloud.config.AgamottoConfigDataLocationResolver
-org.springframework.cloud.client.discovery.EnableDiscoveryClient=\
 org.agamotto.cloud.AgamottoDiscoveryAutoConfiguration
 

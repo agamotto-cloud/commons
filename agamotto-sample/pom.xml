@@ -24,17 +24,13 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.agamotto.cloud</groupId>
 			<artifactId>agamotto-core</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-
-
-
-
 
 	</dependencies>
 

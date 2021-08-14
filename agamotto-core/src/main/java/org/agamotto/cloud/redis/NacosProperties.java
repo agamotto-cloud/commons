@@ -1,4 +1,4 @@
-package org.agamotto.cloud.nacos;
+package org.agamotto.cloud.redis;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

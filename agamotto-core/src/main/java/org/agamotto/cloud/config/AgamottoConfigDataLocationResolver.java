@@ -1,7 +1,7 @@
 package org.agamotto.cloud.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.agamotto.cloud.nacos.NacosProperties;
+import org.agamotto.cloud.redis.NacosProperties;
 import org.springframework.boot.context.config.*;
 import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;

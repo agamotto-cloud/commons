@@ -23,10 +23,7 @@ public class AgamottoServiceRegistration extends AbstractAutoServiceRegistration
 
 
     @Override
-    @Deprecated
     protected Object getConfiguration() {
-        log.warn("获取服务注册之后的配置");
-        //此处是完成注册之后,发布注册完成事件传递的变量
         return null;
     }
 

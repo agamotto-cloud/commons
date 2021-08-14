@@ -9,7 +9,9 @@ spring:
  #   agamotto:
  #     config:
    #     enabled: true
+    discovery:
+      enabled: true
   application:
     name: agamotto-sample
-  config:
-    import: optional:nacos:configserver
+#  config:
+#    import: optional:nacos:configserver

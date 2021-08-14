@@ -8,53 +8,41 @@
 	<packaging>jar</packaging>
 
 	<name>agamotto-sample</name>
+
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
 	</properties>
+
 	<parent>
-		<groupId>org.agamotto.cloud</groupId>
-		<artifactId>agamotto-commons-parent</artifactId>
-		<version>0.0.1</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.2</version>
 	</parent>
 
 
+
 	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.20</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.agamotto.cloud</groupId>
-			<artifactId>agamotto-core</artifactId>
+			<artifactId>agamotto-starter</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 
 	</dependencies>
 
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<outputDirectory>../target</outputDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>8</source>
-					<target>8</target>
-				</configuration>
-			</plugin>
-
-		</plugins>
-	<!--	<finalName>${project.artifactId}</finalName>-->
-	</build>
 </project>
 

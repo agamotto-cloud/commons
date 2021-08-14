@@ -23,6 +23,7 @@ public class AgamottoServiceRegistration extends AbstractAutoServiceRegistration
 
 
     @Override
+    @Deprecated
     protected Object getConfiguration() {
         return null;
     }

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>agamotto-commons-parent</artifactId>
         <groupId>org.agamotto.cloud</groupId>
-        <version>0.0.1</version>
+        <version>0.0.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,12 +21,10 @@
         <dependency>
             <groupId>org.agamotto.cloud</groupId>
             <artifactId>agamotto-discovery</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.agamotto.cloud</groupId>
             <artifactId>agamotto-util</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

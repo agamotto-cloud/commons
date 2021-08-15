@@ -79,6 +79,13 @@
             <id>spring-releases</id>
             <url>https://repo.spring.io/release</url>
         </repository>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/agamotto-cloud/*</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <distributionManagement>

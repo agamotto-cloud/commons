@@ -1,14 +1,14 @@
 package org.springframework.cloud.gateway.sample.controller;
 
 
+import org.agamotto.cloud.resp.AgamottoResponse;
+import org.agamotto.cloud.resp.Ret;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.gateway.sample.exception.Error;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class IndexController {
@@ -17,15 +17,20 @@ public class IndexController {
     private DiscoveryClient discoveryClient;
 
     @GetMapping("/services")
-    public List<String> getServices(){
-        return discoveryClient.getServices();
+    public Ret<?> getServices() {
+        return AgamottoResponse.ok(discoveryClient.getServices());
     }
 
 
     @GetMapping("/service")
-    public List<ServiceInstance> getServicesxxx(@RequestParam("service") String service){
-        return discoveryClient.getInstances(service);
+    public Ret<?> getServicesxxx(@RequestParam("service") String service) {
+        return AgamottoResponse.ok(discoveryClient.getInstances(service));
     }
 
+    @GetMapping("/exception")
+    public Ret<?> getException() {
+        Error.ERROR_PARAM.toThrow();
+        return AgamottoResponse.ok();
+    }
 }
 

@@ -8,7 +8,7 @@
     <artifactId>agamotto-commons-parent</artifactId>
     <packaging>pom</packaging>
 
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 
    <modules>
 
@@ -16,6 +16,7 @@
        <module>agamotto-sample</module>
        <module>agamotto-util</module>
        <module>agamotto-starter</module>
+       <module>agamotto-web</module>
    </modules>
 
 
@@ -54,7 +55,11 @@
                 <artifactId>agamotto-util</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.agamotto.cloud</groupId>
+                <artifactId>agamotto-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.agamotto.cloud</groupId>
                 <artifactId>agamotto-discovery</artifactId>

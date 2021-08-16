@@ -8,7 +8,7 @@
     <artifactId>agamotto-commons-parent</artifactId>
     <packaging>pom</packaging>
 
-    <version>0.0.4</version>
+    <version>0.1.0</version>
 
    <modules>
 
@@ -86,7 +86,7 @@
         </repository>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/agamotto-cloud/*</url>
+            <url>https://agamotto-maven.pkg.coding.net/repository/dev/commons/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -95,11 +95,10 @@
 
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/agamotto-cloud/commons</url>
+            <id>agamotto-dev-commons</id>
+            <name>commons</name>
+            <url>https://agamotto-maven.pkg.coding.net/repository/dev/commons/</url>
         </repository>
-
     </distributionManagement>
 
 

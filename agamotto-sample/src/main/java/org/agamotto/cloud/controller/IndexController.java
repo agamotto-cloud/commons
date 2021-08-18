@@ -1,11 +1,11 @@
-package org.springframework.cloud.gateway.sample.controller;
+package org.agamotto.cloud.controller;
 
 
 import org.agamotto.cloud.resp.AgamottoResponse;
 import org.agamotto.cloud.resp.Ret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.gateway.sample.exception.Error;
+import org.agamotto.cloud.exception.Error;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

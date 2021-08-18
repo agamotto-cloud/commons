@@ -1,7 +1,5 @@
-package org.springframework.cloud.gateway.sample.exception;
+package org.agamotto.cloud.exception;
 
-import org.agamotto.cloud.exception.AgamottoBusinessException;
-import org.agamotto.cloud.exception.AgamottoException;
 import org.springframework.lang.Nullable;
 
 import java.util.HashMap;

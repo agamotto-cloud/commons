@@ -8,7 +8,7 @@
     <artifactId>agamotto-commons-parent</artifactId>
     <packaging>pom</packaging>
 
-    <version>0.1.1</version>
+   <version>0.1.2</version>
 
     <modules>
 
@@ -83,7 +83,7 @@
             <url>https://repo.spring.io/release</url>
         </repository>
         <repository>
-            <id>github</id>
+            <id>agamotto-dev-commons</id>
             <url>https://agamotto-maven.pkg.coding.net/repository/dev/commons/</url>
             <snapshots>
                 <enabled>true</enabled>

@@ -29,13 +29,12 @@ import javax.validation.ConstraintViolationException;
 
 @Slf4j
 @ControllerAdvice
-public class GlobalExceptionHandler  {
-
+public class GlobalExceptionHandler {
 
 
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public Ret defaultErrorHandler(Exception e) {
+    public Ret<?> defaultErrorHandler(Exception e) {
         log.error("未知错误", e);
         return AgamottoResponse.error(500, e.getMessage());
     }
@@ -43,13 +42,13 @@ public class GlobalExceptionHandler  {
 
     @ResponseBody
     @ExceptionHandler(value = AgamottoException.class)
-    public Ret defaultErrorHandler(AgamottoException e) {
+    public Ret<?> defaultErrorHandler(AgamottoException e) {
         return AgamottoResponse.error(e.getCode(), e.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(value = RuntimeException.class)
-    public Ret defaultErrorHandlerxx(RuntimeException e) {
+    public Ret<?> defaultErrorHandlerxx(RuntimeException e) {
         return AgamottoResponse.error(500, e.getMessage());
     }
 
@@ -81,7 +80,9 @@ public class GlobalExceptionHandler  {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public Ret<?> allExceptionHandler(MethodArgumentNotValidException e) {
-        log.error("", e);
+        if (log.isDebugEnabled()) {
+            log.debug("", e);
+        }
         if (e.getBindingResult().getAllErrors().size() > 0) {
             String errorMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
             return AgamottoResponse.error(500, errorMessage);
@@ -93,7 +94,9 @@ public class GlobalExceptionHandler  {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     public Ret<?> listExceptionHandler(ConstraintViolationException e) {
-        log.error("", e);
+        if (log.isDebugEnabled()) {
+            log.debug("", e);
+        }
         return AgamottoResponse.error(500, e.getMessage());
     }
 
@@ -101,7 +104,9 @@ public class GlobalExceptionHandler  {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseBody
     public Ret<?> inputExceptionHandler(MissingServletRequestParameterException e) {
-        log.error("", e);
+        if (log.isDebugEnabled()) {
+            log.debug("", e);
+        }
         return AgamottoResponse.error(500, e.getMessage());
     }
 
@@ -111,8 +116,10 @@ public class GlobalExceptionHandler  {
     @ExceptionHandler(BindException.class)
     @ResponseBody
     public Ret<?> allExceptionHandler(BindException e) {
-        log.error("", e);
-        if (null != e.getBindingResult().getAllErrors() && e.getBindingResult().getAllErrors().size() > 0) {
+        if (log.isDebugEnabled()) {
+            log.debug("", e);
+        }
+        if (e.getBindingResult().getAllErrors().size() > 0) {
             String errorMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
             return AgamottoResponse.error(500, errorMessage);
         } else {

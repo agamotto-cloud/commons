@@ -5,7 +5,7 @@ import org.springframework.lang.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum Error {
+public enum SampleError {
 
     ERROR_SYS(99901, "系统异常"),
     ERROR_PARAM(99902, "参数错误"),
@@ -17,7 +17,7 @@ public enum Error {
     private Integer code;
     private String msg;
 
-    Error(Integer code, String msg) {
+    SampleError(Integer code, String msg) {
         this.agamottoException = AgamottoBusinessException.build(code, msg);
         this.code = code;
         this.msg = msg;
@@ -27,7 +27,7 @@ public enum Error {
 
     static {
         mappings = new HashMap<>(values().length);
-        for (Error error : values()) {
+        for (SampleError error : values()) {
             if (mappings.containsKey(error.code)) {
                 throw new RuntimeException("异常" + error.code + "(" + error.msg + ")定义重复");
             }

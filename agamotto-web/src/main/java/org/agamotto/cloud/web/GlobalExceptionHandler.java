@@ -58,15 +58,12 @@ public class GlobalExceptionHandler {
             HttpMediaTypeNotSupportedException.class,
             HttpMediaTypeNotAcceptableException.class,
             MissingPathVariableException.class,
-            MissingServletRequestParameterException.class,
             ServletRequestBindingException.class,
             ConversionNotSupportedException.class,
             TypeMismatchException.class,
             HttpMessageNotReadableException.class,
             HttpMessageNotWritableException.class,
-            MethodArgumentNotValidException.class,
             MissingServletRequestPartException.class,
-            BindException.class,
             NoHandlerFoundException.class,
             AsyncRequestTimeoutException.class
     })

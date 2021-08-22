@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.agamotto.cloud.config.Constant;
 import org.agamotto.cloud.serviceregistry.AgamottoServiceInstance;
-import org.agamotto.cloud.serviceregistry.TtlScheduler;
+import org.agamotto.cloud.util.TtlScheduler;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;

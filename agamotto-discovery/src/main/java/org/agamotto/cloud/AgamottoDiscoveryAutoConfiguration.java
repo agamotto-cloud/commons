@@ -6,7 +6,7 @@ import org.agamotto.cloud.discovery.AgamottoDiscoveryClient;
 import org.agamotto.cloud.serviceregistry.AgamottoServiceInstance;
 import org.agamotto.cloud.serviceregistry.AgamottoServiceRegistration;
 import org.agamotto.cloud.serviceregistry.AgamottoServiceRegistry;
-import org.agamotto.cloud.serviceregistry.TtlScheduler;
+import org.agamotto.cloud.util.TtlScheduler;
 import org.agamotto.cloud.util.ServiceUtils;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -24,31 +24,6 @@ import org.springframework.core.env.Environment;
 @Configuration(proxyBeanMethods = false)
 public class AgamottoDiscoveryAutoConfiguration {
 
-
-    @Bean
-    @ConditionalOnMissingBean(Config.class)
-    public Config redissonClientConfig() {
-        Config config = new Config();
-        config.useSingleServer().setAddress("redis://api.agamotto.cloud:6379")
-                .setPassword("dong19951018");
-        config.setCodec(JsonJacksonCodec.INSTANCE);
-        return config;
-    }
-
-    @Bean
-    public TtlScheduler ttlScheduler() {
-        return new TtlScheduler();
-    }
-
-    @Bean
-    public RedissonClient redissonClient(Config redissonClientConfig) {
-        try {
-            return Redisson.create(redissonClientConfig);
-        } catch (Exception e) {
-            log.error("redis连接失败", e);
-            throw e;
-        }
-    }
 
 
     @Bean

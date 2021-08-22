@@ -1,0 +1,6 @@
+org.springframework.boot.context.config.ConfigDataLoader=\
+org.agamotto.cloud.config.AgamottoConfigServerConfigDataLoader
+org.springframework.boot.context.config.ConfigDataLocationResolver=\
+org.agamotto.cloud.config.AgamottoConfigDataLocationResolver
+org.springframework.boot.env.EnvironmentPostProcessor=\
+org.agamotto.cloud.config.AgamottoConfigDataMissingEnvironmentPostProcessor

@@ -11,12 +11,13 @@
    <version>0.1.5</version>
 
     <modules>
-
+        <module>agamotto-config</module>
         <module>agamotto-discovery</module>
         <module>agamotto-sample</module>
         <module>agamotto-util</module>
         <module>agamotto-starter</module>
         <module>agamotto-web</module>
+        <module>agamotto-core</module>
     </modules>
 
 
@@ -61,6 +62,11 @@
             <dependency>
                 <groupId>org.agamotto.cloud</groupId>
                 <artifactId>agamotto-discovery</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.agamotto.cloud</groupId>
+                <artifactId>agamotto-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

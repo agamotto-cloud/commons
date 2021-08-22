@@ -13,5 +13,5 @@ spring:
       enabled: true
   application:
     name: agamotto-sample
-#  config:
-#    import: optional:nacos:configserver
+  #config:
+   #import: optional:agamotto-cloud:xx

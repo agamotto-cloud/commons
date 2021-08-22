@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.agamotto.cloud.discovery;
+package org.agamotto.cloud.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.TaskScheduler;
@@ -27,8 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 
 @Slf4j
-public class ServiceScheduler {
-
+public class TtlScheduler {
 
     private final TaskScheduler scheduler = new ConcurrentTaskScheduler(Executors.newSingleThreadScheduledExecutor());
 

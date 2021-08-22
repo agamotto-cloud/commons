@@ -3,6 +3,7 @@ package org.agamotto.cloud.serviceregistry;
 
 import lombok.extern.slf4j.Slf4j;
 import org.agamotto.cloud.config.Constant;
+import org.agamotto.cloud.util.TtlScheduler;
 import org.redisson.api.RBucket;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;

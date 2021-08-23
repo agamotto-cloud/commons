@@ -13,7 +13,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-commons-dep
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: 设置java环境

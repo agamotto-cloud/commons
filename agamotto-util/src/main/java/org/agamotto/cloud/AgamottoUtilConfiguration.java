@@ -56,4 +56,5 @@ public class AgamottoUtilConfiguration {
         config.setCodec(JsonJacksonCodec.INSTANCE);
         return config;
     }
+
 }

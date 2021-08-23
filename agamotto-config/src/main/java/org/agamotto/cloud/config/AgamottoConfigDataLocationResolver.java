@@ -70,8 +70,9 @@ public class AgamottoConfigDataLocationResolver implements ConfigDataLocationRes
         RedissonClient redissonClient = null;
         List<ConfigServerConfigDataResource> locations = new ArrayList<>();
         try {
+            Config config = AgamottoUtilConfiguration.loadProperties();
 
-            registerBean(context, Config.class, AgamottoUtilConfiguration.loadProperties());
+            registerBean(context, Config.class,config);
             registerAndPromoteBean(context, RedissonClient.class, this::createRedissonClient);
             ConfigurableBootstrapContext bootstrapContext = context.getBootstrapContext();
             redissonClient = bootstrapContext.get(RedissonClient.class);
@@ -135,6 +136,8 @@ public class AgamottoConfigDataLocationResolver implements ConfigDataLocationRes
 
     protected RedissonClient createRedissonClient(BootstrapContext context) {
         Config properties = context.get(Config.class);
+        properties.useSingleServer().setConnectionMinimumIdleSize(1);
+        properties.useSingleServer().setConnectionMinimumIdleSize(1);
         return AgamottoUtilConfiguration.createRedissonClient(properties);
     }
 

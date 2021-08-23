@@ -17,6 +17,8 @@
 package org.agamotto.cloud.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.agamotto.cloud.Constant;
+import org.agamotto.cloud.util.ServiceUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
@@ -66,10 +68,10 @@ public class AgamottoConfigDataMissingEnvironmentPostProcessor implements Enviro
         if (hasAgamottoConfigImport(property)) {
             return;
         }
-        log.info("增加读取远程配置");
+        log.trace("增加读取远程配置");
         MapPropertySource cloudConfigImport = new MapPropertySource("add-import-config",
                 Collections.<String, Object>singletonMap(CONFIG_IMPORT_PROPERTY, ConfigDataLocation.OPTIONAL_PREFIX +
-                        AgamottoConfigDataLocationResolver.PREFIX+"xxx"));
+                        Constant.CONFIG_PREFIX_KEY+ ServiceUtils.getServiceName(environment)));
         propertySources.addLast(cloudConfigImport);
     }
 
@@ -86,7 +88,7 @@ public class AgamottoConfigDataMissingEnvironmentPostProcessor implements Enviro
 
     private boolean hasAgamottoConfigImport(List<String> property) {
         for (String s : property) {
-            if (StringUtils.hasText(s) && s.startsWith(ConfigDataLocation.OPTIONAL_PREFIX + AgamottoConfigDataLocationResolver.PREFIX)) {
+            if (StringUtils.hasText(s) && s.startsWith(ConfigDataLocation.OPTIONAL_PREFIX + Constant.CONFIG_PREFIX_KEY)) {
                 return true;
             }
         }

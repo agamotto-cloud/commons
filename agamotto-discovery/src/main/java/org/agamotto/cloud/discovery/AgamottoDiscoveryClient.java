@@ -2,7 +2,7 @@ package org.agamotto.cloud.discovery;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.agamotto.cloud.config.Constant;
+import org.agamotto.cloud.Constant;
 import org.agamotto.cloud.serviceregistry.AgamottoServiceInstance;
 import org.agamotto.cloud.util.TtlScheduler;
 import org.redisson.api.RMap;
@@ -59,7 +59,7 @@ public class AgamottoDiscoveryClient implements DiscoveryClient {
 
     private List<ServiceInstance> getRemoteInstances(String serviceId) {
         try {
-            RMap<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_KEY + ":" + serviceId);
+            RMap<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":" + serviceId);
             if (instanceMap == null || !instanceMap.isExists()) {
                 return new ArrayList<>();
             }
@@ -94,7 +94,7 @@ public class AgamottoDiscoveryClient implements DiscoveryClient {
 
     public List<String> getRemoteServices() {
         try {
-            RMap<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_KEY + ":list");
+            RMap<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":list");
             if (instanceMap == null || !instanceMap.isExists()) {
                 return new ArrayList<>();
             }

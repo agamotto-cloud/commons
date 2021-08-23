@@ -8,7 +8,7 @@
     <artifactId>agamotto-commons-parent</artifactId>
     <packaging>pom</packaging>
 
-   <version>0.1.5</version>
+   <version>0.1.6</version>
 
     <modules>
         <module>agamotto-config</module>
@@ -17,7 +17,6 @@
         <module>agamotto-util</module>
         <module>agamotto-starter</module>
         <module>agamotto-web</module>
-        <module>agamotto-core</module>
     </modules>
 
 

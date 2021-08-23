@@ -2,9 +2,13 @@ package org.agamotto.cloud.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.agamotto.cloud.AgamottoUtilConfiguration;
+import org.agamotto.cloud.Constant;
+import org.agamotto.cloud.util.ServiceUtils;
 import org.apache.commons.logging.Log;
 import org.redisson.Redisson;
+import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
+import org.redisson.client.codec.StringCodec;
 import org.redisson.config.Config;
 import org.springframework.boot.BootstrapContext;
 import org.springframework.boot.BootstrapRegistry;
@@ -35,7 +39,7 @@ public class AgamottoConfigDataLocationResolver implements ConfigDataLocationRes
 
     @Override
     public boolean isResolvable(ConfigDataLocationResolverContext context, ConfigDataLocation location) {
-        if (!location.hasPrefix(PREFIX)) {
+        if (!location.hasPrefix(Constant.CONFIG_PREFIX_KEY)) {
             return false;
         } else {
             return true;
@@ -46,7 +50,7 @@ public class AgamottoConfigDataLocationResolver implements ConfigDataLocationRes
     public List<ConfigServerConfigDataResource> resolve(ConfigDataLocationResolverContext context,
                                                         ConfigDataLocation location) {
         try {
-            return resolve(context, location.getNonPrefixedValue(PREFIX));
+            return resolve(context, location.getNonPrefixedValue(Constant.CONFIG_PREFIX_KEY));
         } catch (IOException ex) {
             throw new ConfigDataLocationNotFoundException(location, ex);
         }
@@ -59,25 +63,47 @@ public class AgamottoConfigDataLocationResolver implements ConfigDataLocationRes
 
     @Override
     public List<ConfigServerConfigDataResource> resolveProfileSpecific(ConfigDataLocationResolverContext context, ConfigDataLocation location, Profiles profiles) throws ConfigDataLocationNotFoundException {
-
+        ConfigServerConfigDataResource remoteConfig = new ConfigServerConfigDataResource();
         //从服务器上拉取下来配置
 
         // create redission   client
-        registerBean(context, Config.class, AgamottoUtilConfiguration.loadProperties());
-
-        registerAndPromoteBean(context, RedissonClient.class, this::createRedissonClient);
-        ConfigurableBootstrapContext bootstrapContext = context.getBootstrapContext();
-        RedissonClient redissonClient = bootstrapContext.get(RedissonClient.class);
-
-        MapPropertySource xx = new MapPropertySource("customProperty",
-                Collections.<String, Object>singletonMap("property.from.sample.custom.source", "worked as intended"));
+        RedissonClient redissonClient = null;
         List<ConfigServerConfigDataResource> locations = new ArrayList<>();
-          locations.add(new ConfigServerConfigDataResource());
+        try {
+
+            registerBean(context, Config.class, AgamottoUtilConfiguration.loadProperties());
+            registerAndPromoteBean(context, RedissonClient.class, this::createRedissonClient);
+            ConfigurableBootstrapContext bootstrapContext = context.getBootstrapContext();
+            redissonClient = bootstrapContext.get(RedissonClient.class);
+            for (String profile : profiles) {
+                log.info("加载远程配置(" + Constant.CONFIG_PREFIX_KEY + Constant.CONFIG_GLOBAL_KEY + profile + ")");
+                RBucket<String> globalConfigBucket = redissonClient.getBucket(Constant.CONFIG_PREFIX_KEY + Constant.CONFIG_GLOBAL_KEY + profile, StringCodec.INSTANCE);
+                String globalConfigYaml = globalConfigBucket.get();
+                if (StringUtils.hasText(globalConfigYaml)) {
+                    remoteConfig.getGlobalConfigYaml().add(globalConfigYaml);
+                }
+                log.info("加载远程配置(" + location.getValue() + ":" + profile + ")");
+                RBucket<String> configBucket = redissonClient.getBucket(location.getValue() + ":" + profile, StringCodec.INSTANCE);
+                String configYaml = configBucket.get();
+                if (StringUtils.hasText(configYaml)) {
+                    remoteConfig.getConfigYaml().add(configYaml);
+                }
+            }
+            redissonClient.shutdown();
+
+            locations.add(remoteConfig);
+
+        } catch (Exception e) {
+            log.error("", e);
+            throw e;
+        } finally {
+            if (redissonClient != null) {
+                redissonClient.shutdown();
+            }
+        }
         //解析
         return locations;
     }
-
-
 
 
     private BindHandler getBindHandler(ConfigDataLocationResolverContext context) {
@@ -87,6 +113,7 @@ public class AgamottoConfigDataLocationResolver implements ConfigDataLocationRes
     public <T> void registerBean(ConfigDataLocationResolverContext context, Class<T> type, T instance) {
         context.getBootstrapContext().registerIfAbsent(type, BootstrapRegistry.InstanceSupplier.of(instance));
     }
+
     protected <T> void registerAndPromoteBean(ConfigDataLocationResolverContext context, Class<T> type,
                                               BootstrapRegistry.InstanceSupplier<T> supplier) {
         registerBean(context, type, supplier);
@@ -110,7 +137,6 @@ public class AgamottoConfigDataLocationResolver implements ConfigDataLocationRes
         Config properties = context.get(Config.class);
         return AgamottoUtilConfiguration.createRedissonClient(properties);
     }
-
 
 
 }

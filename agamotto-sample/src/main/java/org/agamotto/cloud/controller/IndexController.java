@@ -2,6 +2,7 @@ package org.agamotto.cloud.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.agamotto.cloud.exception.AgamottoBusinessException;
 import org.agamotto.cloud.exception.SampleError;
 import org.agamotto.cloud.resp.AgamottoResponse;
 import org.agamotto.cloud.resp.Ret;

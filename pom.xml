@@ -44,11 +44,6 @@
             </dependency>
 
             <dependency>
-                <groupId>com.alibaba.nacos</groupId>
-                <artifactId>nacos-client</artifactId>
-                <version>1.4.0</version>
-            </dependency>
-            <dependency>
                 <groupId>org.agamotto.cloud</groupId>
                 <artifactId>agamotto-util</artifactId>
                 <version>${project.version}</version>

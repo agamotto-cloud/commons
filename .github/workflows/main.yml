@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name: Publish package to GitHub Packages
 on:
   release:
@@ -18,3 +19,36 @@ jobs:
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+=======
+name: 推送至腾讯maven仓库中
+on:
+  push:
+    tags:
+      - v*
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: 缓存maven依赖
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-commons-dep
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: 设置java环境
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          server-id: agamotto-dev-commons
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+      - name: maven deploy 腾讯云效
+        run: mvn --batch-mode deploy
+        env:
+          MAVEN_USERNAME: ${{ secrets.CODING_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.CODING_PASSWORD }}
+>>>>>>> devloper

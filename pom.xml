@@ -8,16 +8,16 @@
     <artifactId>agamotto-commons-parent</artifactId>
     <packaging>pom</packaging>
 
-    <version>0.0.1</version>
+   <version>0.1.7</version>
 
-   <modules>
-
-       <module>agamotto-core</module>
-       <module>agamotto-sample</module>
-       <module>agamotto-util</module>
-
-   </modules>
-
+    <modules>
+        <module>agamotto-config</module>
+        <module>agamotto-discovery</module>
+        <module>agamotto-sample</module>
+        <module>agamotto-util</module>
+        <module>agamotto-starter</module>
+        <module>agamotto-web</module>
+    </modules>
 
 
     <properties>
@@ -32,52 +32,42 @@
         <version>2.4.2</version>
     </parent>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-      <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.14</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>
-
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2020.0.0</version>
+                <version>2020.0.3</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.alibaba.nacos</groupId>
-                <artifactId>nacos-client</artifactId>
-                <version>1.4.0</version>
-            </dependency>
-            <dependency>
                 <groupId>org.agamotto.cloud</groupId>
                 <artifactId>agamotto-util</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.agamotto.cloud</groupId>
-                <artifactId>agamotto-core</artifactId>
+                <artifactId>agamotto-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.agamotto.cloud</groupId>
+                <artifactId>agamotto-discovery</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.agamotto.cloud</groupId>
+                <artifactId>agamotto-config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>3.16.1</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
@@ -89,8 +79,44 @@
             <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
         </repository>
         <repository>
-            <id>spring-milestone</id>
+            <id>spring-releases</id>
             <url>https://repo.spring.io/release</url>
         </repository>
+        <repository>
+            <id>agamotto-dev-commons</id>
+            <url>https://agamotto-maven.pkg.coding.net/repository/dev/commons/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>agamotto-dev-commons</id>
+            <name>commons</name>
+            <url>https://agamotto-maven.pkg.coding.net/repository/dev/commons/</url>
+        </repository>
+    </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

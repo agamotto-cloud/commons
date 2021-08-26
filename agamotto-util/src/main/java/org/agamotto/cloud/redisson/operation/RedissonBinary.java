@@ -2,6 +2,7 @@ package org.agamotto.cloud.redisson.operation;
 
 import org.redisson.api.RBinaryStream;
 import org.redisson.api.RedissonClient;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.io.OutputStream;
  * @author: yxq
  * @date: 2021/8/26 15:50
  */
+@Component
 public class RedissonBinary {
 
     @Resource

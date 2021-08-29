@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import java.util.Base64;
+
 
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -46,13 +48,12 @@ public class AgamottoUtilConfiguration {
         }
     }
 
-    private static final String ppss = "dong";
-    private static final String ppp = 1 + "995" + 1 + "018";
+    private static final String ppss = "YWdhbW90dG8xMjM=";
 
     public static Config loadProperties() {
         Config config = new Config();
-        SingleServerConfig builder = config.useSingleServer().setAddress("redis://api.agamotto.cloud:6379");
-        builder.setPassword(ppss + ppp);
+        SingleServerConfig builder = config.useSingleServer().setAddress("redis://api.agamotto.cloud:8082");
+        builder.setPassword(new String(Base64.getDecoder().decode(ppss)));
         config.setCodec(JsonJacksonCodec.INSTANCE);
         return config;
     }

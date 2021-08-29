@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class BasePageParam {
-    private Long current;
-    private Long size;
+    private Long current = 1L;
+    private Long size = 10L;
 }

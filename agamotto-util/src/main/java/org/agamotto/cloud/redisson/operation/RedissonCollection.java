@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RedissonCollection {
 
-    //@Resource
+
     private RedissonClient redissonClient;
 
     public RedissonCollection(RedissonClient redissonClient){

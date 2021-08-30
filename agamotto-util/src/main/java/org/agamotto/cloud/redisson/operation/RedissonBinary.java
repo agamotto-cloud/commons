@@ -15,12 +15,13 @@ import java.io.OutputStream;
  * @author: yxq
  * @date: 2021/8/26 15:50
  */
-@Component
 public class RedissonBinary {
 
-    @Resource
     private RedissonClient redissonClient;
 
+    public RedissonBinary(RedissonClient redissonClient){
+        this.redissonClient = redissonClient;
+    }
     /**
      * 获取输出流
      * @param key

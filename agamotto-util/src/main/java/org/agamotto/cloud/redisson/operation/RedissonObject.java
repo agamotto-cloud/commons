@@ -13,11 +13,14 @@ import java.util.concurrent.TimeUnit;
  * @author: yxq
  * @date: 2021/8/26 15:24
  */
-@Component
+
 public class RedissonObject {
 
-    @Resource
     private RedissonClient redissonClient;
+
+    public RedissonObject(RedissonClient redissonClient){
+        this.redissonClient = redissonClient;
+    }
 
     /**
      * 获取对象值

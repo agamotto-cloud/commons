@@ -8,7 +8,7 @@
     <artifactId>agamotto-commons-parent</artifactId>
     <packaging>pom</packaging>
 
-    <version>0.1.10.2</version><!--agamotto版本-->
+    <version>0.1.10.3</version><!--agamotto版本-->
 
     <modules>
         <module>agamotto-config</module>

@@ -1,6 +1,7 @@
 package org.agamotto.cloud;
 
 import lombok.extern.slf4j.Slf4j;
+import org.agamotto.cloud.redisson.operation.RedissonCollection;
 import org.agamotto.cloud.util.TtlScheduler;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -37,6 +38,11 @@ public class AgamottoUtilConfiguration {
     @Bean
     public RedissonClient redissonClient(Config redissonClientConfig) {
         return createRedissonClient(redissonClientConfig);
+    }
+
+    @Bean
+    public RedissonCollection redissonCollection(RedissonClient redissonClient){
+        return new RedissonCollection(redissonClient);
     }
 
     public static RedissonClient createRedissonClient(Config redissonClientConfig) {

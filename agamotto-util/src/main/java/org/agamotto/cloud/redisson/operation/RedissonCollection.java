@@ -19,11 +19,16 @@ import java.util.concurrent.TimeUnit;
  * @author: yxq
  * @date: 2021/8/26 15:33
  */
-@Component
+
 public class RedissonCollection {
 
-    @Resource
+    //@Resource
     private RedissonClient redissonClient;
+
+    public RedissonCollection(RedissonClient redissonClient){
+        this.redissonClient = redissonClient;
+    }
+
 
     /**
      * 获取map集合

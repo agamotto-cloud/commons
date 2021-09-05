@@ -1,9 +1,9 @@
 package org.agamotto.cloud.resp;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
 public class AgamottoResponse {
-
-
 
 
     public static <T> Ret<T> ok() {
@@ -22,6 +22,22 @@ public class AgamottoResponse {
         ret.setStatusCode(200);
         return ret;
     }
+
+    public static <T> Ret<PageData<T>> ok(IPage<T> data) {
+        Ret<PageData<T>> ret = new Ret<>();
+        PageData<T> pageData = new PageData<>();
+        pageData.setCurrent(data.getCurrent());
+        pageData.setPages(data.getPages());
+        pageData.setSize(data.getSize());
+        pageData.setTotal(data.getTotal());
+        pageData.setData(data.getRecords());
+        ret.setData(pageData);
+        ret.setMsg("ok");
+        ret.setSuccess(true);
+        ret.setStatusCode(200);
+        return ret;
+    }
+
 
     public static <T> Ret<T> ok(T data, String msg) {
         Ret<T> ret = new Ret<>();

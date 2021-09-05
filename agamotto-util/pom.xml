@@ -5,7 +5,7 @@
     <parent>
         <artifactId>agamotto-commons-parent</artifactId>
         <groupId>org.agamotto.cloud</groupId>
-       <version>0.1.10.3</version><!--agamotto版本-->
+       <version>0.1.10.4</version><!--agamotto版本-->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

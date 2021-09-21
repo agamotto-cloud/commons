@@ -22,7 +22,7 @@ public class IndexController {
     @Autowired
     private DiscoveryClient discoveryClient;
 
-    @Value("${property.from.sample.custom.source}")
+  //  @Value("${property.from.sample.custom.source}")
     private String source;
 
     @PostConstruct

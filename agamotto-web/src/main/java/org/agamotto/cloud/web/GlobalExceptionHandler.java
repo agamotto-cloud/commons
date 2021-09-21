@@ -38,17 +38,26 @@ public class GlobalExceptionHandler {
         log.error("未知错误", e);
         return AgamottoResponse.error(500, e.getMessage());
     }
-
+    @ResponseBody
+    @ExceptionHandler(value = Throwable.class)
+    public Ret<?> defaultErrorHandler(Throwable e) {
+        log.error("未知错误", e);
+        return AgamottoResponse.error(500, e.getMessage());
+    }
 
     @ResponseBody
     @ExceptionHandler(value = AgamottoException.class)
     public Ret<?> defaultErrorHandler(AgamottoException e) {
+        if (log.isDebugEnabled()) {
+            log.debug("", e);
+        }
         return AgamottoResponse.error(e.getCode(), e.getMessage());
     }
 
     @ResponseBody
     @ExceptionHandler(value = RuntimeException.class)
     public Ret<?> defaultErrorHandlerxx(RuntimeException e) {
+        log.error("未知错误",e);
         return AgamottoResponse.error(500, e.getMessage());
     }
 
@@ -68,6 +77,9 @@ public class GlobalExceptionHandler {
             AsyncRequestTimeoutException.class
     })
     public final Ret handleException(Exception ex, WebRequest request) throws Exception {
+        if (log.isDebugEnabled()) {
+            log.debug("", ex);
+        }
         return AgamottoResponse.error(500, ex.getMessage());
     }
 
@@ -88,6 +100,11 @@ public class GlobalExceptionHandler {
         }
     }
 
+    /**
+     * 参数绑定
+     * @param e
+     * @return
+     */
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     public Ret<?> listExceptionHandler(ConstraintViolationException e) {

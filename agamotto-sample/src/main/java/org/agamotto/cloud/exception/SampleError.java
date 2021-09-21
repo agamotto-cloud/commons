@@ -1,6 +1,6 @@
 package org.agamotto.cloud.exception;
 
-public enum SampleError implements BaseError<SampleError>{
+public enum SampleError implements BaseError<SampleError> {
 
     ERROR_SYS(99901, "系统异常"),
     ERROR_PARAM(99902, "参数错误"),

@@ -6,6 +6,9 @@ import org.agamotto.cloud.exception.AgamottoBusinessException;
 import org.agamotto.cloud.exception.SampleError;
 import org.agamotto.cloud.resp.AgamottoResponse;
 import org.agamotto.cloud.resp.Ret;
+import org.agamotto.cloud.status.BaseStatus;
+import org.agamotto.cloud.status.SampleStatus;
+import org.agamotto.cloud.status.StatusUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -22,7 +25,7 @@ public class IndexController {
     @Autowired
     private DiscoveryClient discoveryClient;
 
-  //  @Value("${property.from.sample.custom.source}")
+    //  @Value("${property.from.sample.custom.source}")
     private String source;
 
     @PostConstruct
@@ -45,6 +48,11 @@ public class IndexController {
     public Ret<?> getException() {
         SampleError.ERROR_PARAM.toThrow();
         return AgamottoResponse.ok();
+    }
+
+    @GetMapping("/status")
+    public Ret<?> getStatus() {
+        return AgamottoResponse.ok(StatusUtils.getAll(SampleStatus.class));
     }
 }
 

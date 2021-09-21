@@ -10,7 +10,9 @@ public interface BaseStatus<T extends BaseStatus<?>> {
 
     org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(BaseStatus.class);
 
-    Integer value();
+    default Integer value(){
+        return getStatus().getStatus();
+    }
 
     Status getStatus();
 

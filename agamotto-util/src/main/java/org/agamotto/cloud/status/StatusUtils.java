@@ -12,7 +12,7 @@ import java.util.Map;
 @Slf4j
 public class StatusUtils {
 
-    private static final Map<Class<?>, List<Status>> statusMap = new HashMap<>();
+    private static final Map<Class<?>, Map<Integer,Status>> statusMap = new HashMap<>();
 
     /**
      * 转换枚举，取出属性列表
@@ -20,22 +20,22 @@ public class StatusUtils {
      * @param <T>
      * @return
      */
-    public static <T extends BaseStatus<?>> List<Status> getAll(Class<T> classObj) {
+    public static <T extends BaseStatus<?>> Map<Integer,Status> getAll(Class<T> classObj) {
         if (statusMap.containsKey(classObj)) {
             return statusMap.get(classObj);
         }
         try {
-            List<Status> list = new ArrayList<>();
+            Map<Integer,Status> statusMap = new HashMap<>();
             Method method = classObj.getMethod("values");
             BaseStatus<?>[] xx = (BaseStatus<?>[]) method.invoke(null);
             if (xx == null || xx.length == 0) {
-                return list;
+                return statusMap;
             }
             for (BaseStatus<?> t : xx) {
-                list.add(t.getStatus());
+                statusMap.put(t.value(),t.getStatus());
             }
-            statusMap.put(classObj, list);
-            return list;
+            StatusUtils.statusMap.put(classObj, statusMap);
+            return statusMap;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             log.error("", e);
             return null;

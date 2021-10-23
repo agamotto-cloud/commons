@@ -39,8 +39,7 @@ public class AgamottoDiscoveryClient implements DiscoveryClient {
 
     @Override
     public String description() {
-        // log.info("描述");
-        return null;
+        return "Spring Cloud agamotto Discovery Client";
     }
 
 
@@ -54,9 +53,32 @@ public class AgamottoDiscoveryClient implements DiscoveryClient {
         }
         scheduler.add(serviceId + "getInstances", () -> getRemoteInstances(serviceId));
         return getRemoteInstances(serviceId);
-
     }
 
+
+
+    @Override
+    public List<String> getServices() {
+        if (services != null) {
+            return services;
+        }
+        scheduler.add("getServices", this::getRemoteServices);
+        return getRemoteServices();
+    }
+
+    public List<String> getRemoteServices() {
+        try {
+            RMap<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":list");
+            if (instanceMap == null || !instanceMap.isExists()) {
+                return new ArrayList<>();
+            }
+            this.services = new ArrayList<>(instanceMap.values());
+            return services;
+        } catch (Exception e) {
+            log.error("获取服务列表失败", e);
+            throw new RuntimeException(e);
+        }
+    }
     private List<ServiceInstance> getRemoteInstances(String serviceId) {
         try {
             RMap<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":" + serviceId);
@@ -82,34 +104,10 @@ public class AgamottoDiscoveryClient implements DiscoveryClient {
         }
     }
 
-
-    @Override
-    public List<String> getServices() {
-        if (services != null) {
-            return services;
-        }
-        scheduler.add("getServices", this::getRemoteServices);
-        return getRemoteServices();
-    }
-
-    public List<String> getRemoteServices() {
-        try {
-            RMap<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":list");
-            if (instanceMap == null || !instanceMap.isExists()) {
-                return new ArrayList<>();
-            }
-            this.services = new ArrayList<>(instanceMap.values());
-            return services;
-        } catch (Exception e) {
-            log.error("获取服务列表失败", e);
-            throw new RuntimeException(e);
-        }
-    }
-
     @AllArgsConstructor
-    private static class ServiceInstanceMapData {
-        private Long time;
-        private List<ServiceInstance> serviceInstanceList;
+    public static class ServiceInstanceMapData {
+        public Long time;
+        public List<ServiceInstance> serviceInstanceList;
     }
 
 }

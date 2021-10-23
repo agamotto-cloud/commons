@@ -1,9 +1,8 @@
 package org.agamotto.cloud.resp;
 
 
-import reactor.core.publisher.Mono;
 
-public class AgamottoResponse {
+public class AgamottoReactiveResponse {
 
 
     public static <T> Ret<T> ok() {
@@ -21,15 +20,6 @@ public class AgamottoResponse {
         ret.setSuccess(true);
         ret.setStatusCode(200);
         return ret;
-    }
-
-    public static <T> Mono<Ret<T>> okReactive(T data) {
-        Ret<T> ret = new Ret<>();
-        ret.setData(data);
-        ret.setMsg("ok");
-        ret.setSuccess(true);
-        ret.setStatusCode(200);
-        return Mono.just(ret);
     }
 
 

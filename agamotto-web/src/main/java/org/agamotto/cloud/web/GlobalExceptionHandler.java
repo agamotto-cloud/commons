@@ -86,7 +86,7 @@ public class GlobalExceptionHandler {
     /**
      * 参数校验异常(校验RequestBody类型 参数)
      */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class,BindException.class})
     @ResponseBody
     public Ret<?> allExceptionHandler(MethodArgumentNotValidException e) {
         if (log.isDebugEnabled()) {
@@ -124,21 +124,7 @@ public class GlobalExceptionHandler {
         return AgamottoResponse.error(500, e.getMessage());
     }
 
-    /**
-     * 参数校验异常(校验form-data类型 参数)
-     */
-    @ExceptionHandler(BindException.class)
-    @ResponseBody
-    public Ret<?> allExceptionHandler(BindException e) {
-        if (log.isDebugEnabled()) {
-            log.debug("", e);
-        }
-        if (e.getBindingResult().getAllErrors().size() > 0) {
-            String errorMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-            return AgamottoResponse.error(500, errorMessage);
-        } else {
-            return AgamottoResponse.error(500, e.getMessage());
-        }
-    }
+
+
 
 }

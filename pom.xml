@@ -14,9 +14,12 @@
         <module>agamotto-config</module>
         <module>agamotto-discovery</module>
         <module>agamotto-sample</module>
+        <module>agamotto-reactor-sample</module>
         <module>agamotto-util</module>
         <module>agamotto-starter</module>
+        <module>agamotto-reactor-starter</module>
         <module>agamotto-web</module>
+        <module>agamotto-webflux</module>
     </modules>
 
 
@@ -51,6 +54,11 @@
             <dependency>
                 <groupId>org.agamotto.cloud</groupId>
                 <artifactId>agamotto-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.agamotto.cloud</groupId>
+                <artifactId>agamotto-webflux</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

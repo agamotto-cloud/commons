@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.*;
 import org.springframework.web.reactive.result.view.ViewResolver;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -44,11 +45,11 @@ public class GlobalExceptionHandler extends DefaultErrorWebExceptionHandler {
      *
      */
     public GlobalExceptionHandler(ErrorAttributes errorAttributes,
-                                 WebProperties.Resources resourceProperties,
-                                 ServerProperties serverProperties,
-                                 ApplicationContext applicationContext,
-                                 ServerCodecConfigurer serverCodecConfigurer,
-                                 ObjectProvider<ViewResolver> viewResolversProvider) {
+                                  WebProperties.Resources resourceProperties,
+                                  ServerProperties serverProperties,
+                                  ApplicationContext applicationContext,
+                                  ServerCodecConfigurer serverCodecConfigurer,
+                                  ObjectProvider<ViewResolver> viewResolversProvider) {
         super(errorAttributes, resourceProperties, serverProperties.getError(), applicationContext);
 
         this.setViewResolvers(viewResolversProvider.orderedStream()
@@ -63,18 +64,27 @@ public class GlobalExceptionHandler extends DefaultErrorWebExceptionHandler {
     @Override
     protected Map<String, Object> getErrorAttributes(ServerRequest request, ErrorAttributeOptions includeStackTrace) {
         Throwable error = super.getError(request);
-
-        if(error instanceof IllegalArgumentException){
+        if (log.isDebugEnabled()) {
+            log.error("", error);
+        }
+        if (error instanceof IllegalArgumentException) {
             return response(400, error.getMessage());
         }
-        if(error instanceof AgamottoException){
+        if (error instanceof AgamottoException) {
             return response(((AgamottoException) error).getCode(), error.getMessage());
+        }
+        if (error instanceof ResponseStatusException) {
+            return response(((ResponseStatusException) error).getRawStatusCode(), this.buildMessage(request, error.getMessage()));
+        }
+        if (!log.isDebugEnabled()) {
+            log.error("", error);
         }
         return response(500, this.buildMessage(request, "服务器内部异常"));
     }
 
     /**
      * 指定响应处理方法为JSON处理的方法
+     *
      * @param errorAttributes
      */
     @Override
@@ -84,6 +94,7 @@ public class GlobalExceptionHandler extends DefaultErrorWebExceptionHandler {
 
     /**
      * 根据code获取对应的HttpStatus
+     *
      * @param errorAttributes
      */
     @Override
@@ -93,24 +104,27 @@ public class GlobalExceptionHandler extends DefaultErrorWebExceptionHandler {
 
     /**
      * 构建异常信息
+     *
      * @param request
      * @param msg
      * @return
      */
     private String buildMessage(ServerRequest request, String msg) {
-        StringBuilder message = new StringBuilder(msg+" [");
-        message.append(request.methodName());
-        message.append(" ");
-        message.append(request.uri());
-        message.append(" ]");
-        return message.toString();
+        if (msg == null) {
+            msg = "";
+        }
+        return msg + " [" + request.methodName() +
+                " " +
+                request.uri() +
+                " ]";
     }
 
 
     /**
      * 构建返回的JSON数据格式
-     * @param status        状态码
-     * @param errorMessage  异常信息
+     *
+     * @param status       状态码
+     * @param errorMessage 异常信息
      * @return
      */
     public static Map<String, Object> response(int status, String errorMessage) {
@@ -119,6 +133,7 @@ public class GlobalExceptionHandler extends DefaultErrorWebExceptionHandler {
         map.put(ERROR_EXCEPTION_KEY, AgamottoResponse.error(status, errorMessage));
         return map;
     }
+
     @Override
     protected Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
         Map<String, Object> error = getErrorAttributes(request, getErrorAttributeOptions(request, MediaType.ALL));

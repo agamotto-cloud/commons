@@ -1,18 +1,15 @@
-package org.agamotto.cloud.controller;
+package org.agamotto.cloud.sample.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
 import org.agamotto.cloud.discovery.reactive.AgamottoReactiveDiscoveryClient;
-import org.agamotto.cloud.exception.AgamottoBusinessException;
-import org.agamotto.cloud.exception.SampleError;
+import org.agamotto.cloud.sample.exception.SampleError;
 import org.agamotto.cloud.resp.AgamottoResponse;
 import org.agamotto.cloud.resp.Ret;
-import org.agamotto.cloud.status.BaseStatus;
-import org.agamotto.cloud.status.SampleStatus;
+import org.agamotto.cloud.sample.status.SampleStatus;
 import org.agamotto.cloud.status.StatusUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

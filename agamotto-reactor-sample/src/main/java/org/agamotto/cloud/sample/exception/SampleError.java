@@ -1,4 +1,8 @@
-package org.agamotto.cloud.exception;
+package org.agamotto.cloud.sample.exception;
+
+import org.agamotto.cloud.exception.AgamottoBusinessException;
+import org.agamotto.cloud.exception.AgamottoException;
+import org.agamotto.cloud.exception.BaseError;
 
 public enum SampleError implements BaseError<SampleError> {
 

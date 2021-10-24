@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.agamotto.cloud;
+package org.agamotto.cloud.sample;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

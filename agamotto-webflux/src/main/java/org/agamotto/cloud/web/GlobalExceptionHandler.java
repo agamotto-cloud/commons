@@ -35,7 +35,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
  */
 
 @Slf4j
-@Component
+//@Component
 public class GlobalExceptionHandler extends DefaultErrorWebExceptionHandler {
 
     private final static String ERROR_EXCEPTION_KEY = "error_exception";

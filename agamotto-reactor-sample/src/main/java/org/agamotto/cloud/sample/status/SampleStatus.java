@@ -1,5 +1,8 @@
-package org.agamotto.cloud.status;
+package org.agamotto.cloud.sample.status;
 
+
+import org.agamotto.cloud.status.BaseStatus;
+import org.agamotto.cloud.status.Status;
 
 public enum SampleStatus implements BaseStatus<SampleStatus> {
 

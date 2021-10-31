@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *  {@link ReactiveDiscoveryClient}.
+ * {@link ReactiveDiscoveryClient}.
  *
  * @author Tim Ysewyn
  * @author Chris Bono
@@ -101,7 +101,7 @@ public class AgamottoReactiveDiscoveryClient implements ReactiveDiscoveryClient 
 
     public Flux<String> getRemoteServices() {
         try {
-            RMapReactive<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY +agamottoServiceInstance.getEnv() + ":"+ "list");
+            RMapReactive<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + agamottoServiceInstance.getEnv() + ":" + "list");
             return instanceMap.isExists().flatMapMany(isExists -> {
                 if (isExists) {
                     return instanceMap.valueIterator().collectList().map(v -> {
@@ -121,7 +121,7 @@ public class AgamottoReactiveDiscoveryClient implements ReactiveDiscoveryClient 
 
     private Flux<ServiceInstance> getRemoteInstances(String serviceId) {
         try {
-            RMapReactive<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + serviceId);
+            RMapReactive<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + agamottoServiceInstance.getEnv() + ":" + serviceId);
             return instanceMap.isExists().flatMapMany(isExists -> {
                 if (isExists) {
                     return instanceMap.valueIterator().collectList().map(agamottoInstanceList -> {
@@ -140,7 +140,7 @@ public class AgamottoReactiveDiscoveryClient implements ReactiveDiscoveryClient 
                         return instanceList;
                     }).flatMapIterable(v -> v);
                 } else {
-                    log.error("获取服务列表失败,未找到实例");
+                    log.error("获取服务实例列表失败,未找到实例");
                     return Flux.empty();
                 }
             });

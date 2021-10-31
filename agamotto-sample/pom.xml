@@ -19,7 +19,7 @@
 	<parent>
 		<groupId>org.agamotto.cloud</groupId>
 		<artifactId>agamotto-commons-parent</artifactId>
-		<version>0.2.3</version><!--agamotto版本-->
+		<version>0.2.4</version><!--agamotto版本-->
 	</parent>
 
 
@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>org.agamotto.cloud</groupId>
 			<artifactId>agamotto-starter</artifactId>
-			<version>0.2.3</version><!--agamotto版本-->
+			<version>0.2.4</version><!--agamotto版本-->
 		</dependency>
 
 	</dependencies>

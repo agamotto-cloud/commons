@@ -13,6 +13,9 @@ public class Constant {
     public static final String SERVICE_NAME_KEY = "service-name";
     public static final String SERVICE_ENV_KEY = "env";
 
-
+    public static final String HEADER_USER_ID_KEY = "agamotto_header_user_id";
+    public static final String HEADER_USER_NAME_KEY = "agamotto_header_user_name";
+    public static final String HEADER_ACCOUNT_ID_KEY = "agamotto_header_account_id";
+    public static final String HEADER_ACCOUNT_NAME_KEY = "agamotto_header_account_name";
 
 }

@@ -16,7 +16,6 @@
 
 package org.agamotto.cloud.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.agamotto.cloud.Constant;
 import org.agamotto.cloud.util.ServiceUtils;
 import org.apache.commons.logging.Log;
@@ -30,17 +29,15 @@ import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 
-
-
-public class AgamottoConfigDataMissingEnvironmentPostProcessor implements EnvironmentPostProcessor,Ordered {
+public class AgamottoConfigDataMissingEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     public static final String CONFIG_IMPORT_PROPERTY = "spring.config.import";
     private static final Bindable<String[]> CONFIG_DATA_LOCATION_ARRAY = Bindable.of(String[].class);
@@ -51,7 +48,6 @@ public class AgamottoConfigDataMissingEnvironmentPostProcessor implements Enviro
     public AgamottoConfigDataMissingEnvironmentPostProcessor(Log log) {
         this.log = log;
     }
-
 
 
     @Override
@@ -70,8 +66,8 @@ public class AgamottoConfigDataMissingEnvironmentPostProcessor implements Enviro
         }
         log.trace("增加读取远程配置");
         MapPropertySource cloudConfigImport = new MapPropertySource("add-import-config",
-                Collections.<String, Object>singletonMap(CONFIG_IMPORT_PROPERTY, ConfigDataLocation.OPTIONAL_PREFIX +
-                        Constant.CONFIG_PREFIX_KEY+ ServiceUtils.getServiceName(environment)));
+                Collections.singletonMap(CONFIG_IMPORT_PROPERTY, ConfigDataLocation.OPTIONAL_PREFIX +
+                        Constant.CONFIG_PREFIX_KEY + ServiceUtils.getServiceName(environment)));
         propertySources.addLast(cloudConfigImport);
     }
 
@@ -98,6 +94,6 @@ public class AgamottoConfigDataMissingEnvironmentPostProcessor implements Enviro
 
     @Override
     public int getOrder() {
-        return Ordered.HIGHEST_PRECEDENCE;
+        return ConfigDataEnvironmentPostProcessor.ORDER - 1;
     }
 }

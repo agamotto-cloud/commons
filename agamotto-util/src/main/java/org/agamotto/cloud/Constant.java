@@ -8,4 +8,11 @@ public class Constant {
 
     public final static String CONFIG_GLOBAL_KEY = "global:";
 
+
+    public static final String AGAMOTTO_PROPERTIES_PREFIX = "spring.cloud.agamotto";
+    public static final String SERVICE_NAME_KEY = "service-name";
+    public static final String SERVICE_ENV_KEY = "env";
+
+
+
 }

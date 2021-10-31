@@ -31,6 +31,7 @@ public class AgamottoDiscoveryAutoConfiguration {
         //实例化当前服务实例
         AgamottoServiceInstance agamottoServiceInstance = new AgamottoServiceInstance();
         agamottoServiceInstance.setServiceId(ServiceUtils.getServiceName(environment));
+        agamottoServiceInstance.setEnv(ServiceUtils.getServiceEnv(environment));
         agamottoServiceInstance.setHost(inetUtils.findFirstNonLoopbackHostInfo().getIpAddress());
         agamottoServiceInstance.setPort(serverProperties.getPort());
         agamottoServiceInstance.setInstanceId(agamottoServiceInstance.getServiceId() + ":" + agamottoServiceInstance.getHost() + ":" + agamottoServiceInstance.getPort());

@@ -30,4 +30,9 @@ public class AgamottoServiceInstance implements Registration, Serializable {
     private String scheme;
 
     private Long registryTimestamp;
+
+    /**
+     * 环境
+     */
+    private String env;
 }

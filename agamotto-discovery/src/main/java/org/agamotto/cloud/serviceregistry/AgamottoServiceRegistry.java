@@ -32,11 +32,11 @@ public class AgamottoServiceRegistry implements ServiceRegistry<AgamottoServiceI
         log.info("注册服务:{}.{},{}", agamottoServiceInstance.getServiceId(), agamottoServiceInstance.getInstanceId(), agamottoServiceInstance);
         try {
             updateServiceInfo(agamottoServiceInstance);
-            scheduler.add(agamottoServiceInstance.getInstanceId()+"refister-refresh", () -> {
+            scheduler.add(agamottoServiceInstance.getInstanceId() + "refister-refresh", () -> {
                 updateServiceInfo(agamottoServiceInstance);
             });
         } catch (Exception e) {
-            log.error("注册出错,{}", e);
+            log.error("注册出错", e);
             throw new RuntimeException(e);
         }
     }
@@ -44,11 +44,11 @@ public class AgamottoServiceRegistry implements ServiceRegistry<AgamottoServiceI
     private void updateServiceInfo(AgamottoServiceInstance agamottoServiceInstance) {
         String serviceId = agamottoServiceInstance.getServiceId();
         try {
-            RMap<String, String> serviceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":list");
+            RMap<String, String> serviceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + agamottoServiceInstance.getEnv() + ":" + "list");
             if (!serviceMap.containsKey(serviceId)) {
                 serviceMap.put(serviceId, serviceId);
             }
-            RMap<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":" + serviceId);
+            RMap<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + agamottoServiceInstance.getEnv() + ":" + serviceId);
             agamottoServiceInstance.setRegistryTimestamp(System.currentTimeMillis());
             instanceMap.put(agamottoServiceInstance.getInstanceId(), agamottoServiceInstance);
 
@@ -79,8 +79,8 @@ public class AgamottoServiceRegistry implements ServiceRegistry<AgamottoServiceI
         log.info("注销服务{}", registration);
         String serviceId = registration.getServiceId();
         try {
-            scheduler.remove(registration.getInstanceId()+"refister-refresh");
-            RMap<String, Long> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":" + serviceId);
+            scheduler.remove(registration.getInstanceId() + "refister-refresh");
+            RMap<String, Long> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + registration.getEnv() + ":" + serviceId);
             instanceMap.remove(registration.getInstanceId());
         } catch (Exception e) {
             log.error("注销服务出错", e);
@@ -100,7 +100,7 @@ public class AgamottoServiceRegistry implements ServiceRegistry<AgamottoServiceI
 
     @Override
     public <T> T getStatus(AgamottoServiceInstance registration) {
-        log.info("获取服务状态{}:{}", registration);
+        log.info("获取服务状态:{}", registration);
         return null;
     }
 

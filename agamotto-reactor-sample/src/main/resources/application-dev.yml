@@ -11,7 +11,6 @@ spring:
    #     enabled: true
     discovery:
       enabled: true
-  application:
-    name: agamotto-sample
+property.from.sample.custom.source: adasdasd23232111111111111111111111111111111111111111111
   #config:
    #import: optional:agamotto-cloud:xx

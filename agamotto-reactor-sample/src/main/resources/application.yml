@@ -1,3 +1,8 @@
 spring:
   profiles:
     active: dev
+  #config:
+   # import: optional:cloud:config:aax
+  #application:
+    #name: axbbbbbbbbbbbbbb
+#spring.cloud.agamoot

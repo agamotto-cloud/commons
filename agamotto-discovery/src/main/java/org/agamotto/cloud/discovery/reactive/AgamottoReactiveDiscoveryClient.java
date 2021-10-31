@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Consul version of {@link ReactiveDiscoveryClient}.
+ *  {@link ReactiveDiscoveryClient}.
  *
  * @author Tim Ysewyn
  * @author Chris Bono
@@ -51,6 +51,8 @@ public class AgamottoReactiveDiscoveryClient implements ReactiveDiscoveryClient 
 
     private List<String> services = null;
 
+    @Autowired
+    private AgamottoServiceInstance agamottoServiceInstance;
 
     @Autowired
     private TtlScheduler scheduler;
@@ -99,10 +101,13 @@ public class AgamottoReactiveDiscoveryClient implements ReactiveDiscoveryClient 
 
     public Flux<String> getRemoteServices() {
         try {
-            RMapReactive<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":list");
+            RMapReactive<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY +agamottoServiceInstance.getEnv() + ":"+ "list");
             return instanceMap.isExists().flatMapMany(isExists -> {
                 if (isExists) {
-                    return instanceMap.valueIterator();
+                    return instanceMap.valueIterator().collectList().map(v -> {
+                        this.services = v;
+                        return v;
+                    }).flatMapIterable(v -> v);
                 } else {
                     log.error("获取服务列表失败,未找到实例");
                     return Flux.empty();
@@ -116,7 +121,7 @@ public class AgamottoReactiveDiscoveryClient implements ReactiveDiscoveryClient 
 
     private Flux<ServiceInstance> getRemoteInstances(String serviceId) {
         try {
-            RMapReactive<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":" + serviceId);
+            RMapReactive<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + serviceId);
             return instanceMap.isExists().flatMapMany(isExists -> {
                 if (isExists) {
                     return instanceMap.valueIterator().collectList().map(agamottoInstanceList -> {

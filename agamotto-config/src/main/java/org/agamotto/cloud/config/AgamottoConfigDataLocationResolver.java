@@ -1,11 +1,8 @@
 package org.agamotto.cloud.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.agamotto.cloud.AgamottoUtilConfiguration;
 import org.agamotto.cloud.Constant;
-import org.agamotto.cloud.util.ServiceUtils;
 import org.apache.commons.logging.Log;
-import org.redisson.Redisson;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
@@ -15,21 +12,17 @@ import org.springframework.boot.BootstrapRegistry;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.context.config.*;
 import org.springframework.boot.context.properties.bind.BindHandler;
-import org.springframework.boot.context.properties.bind.Bindable;
-import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.MapPropertySource;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
 public class AgamottoConfigDataLocationResolver implements ConfigDataLocationResolver<ConfigServerConfigDataResource> {
 
-    public static final String PREFIX = "agamotto-cloud:";
+
 
     private final Log log;
 
@@ -90,7 +83,6 @@ public class AgamottoConfigDataLocationResolver implements ConfigDataLocationRes
                     remoteConfig.getConfigYaml().add(configYaml);
                 }
             }
-            redissonClient.shutdown();
 
             locations.add(remoteConfig);
 

@@ -32,7 +32,8 @@ public class AgamottoDiscoveryClient implements DiscoveryClient {
     private final Map<String, ServiceInstanceMapData> serviceInstanceMap = new ConcurrentHashMap<>();
 
     private List<String> services = null;
-
+    @Autowired
+    private AgamottoServiceInstance agamottoServiceInstance;
 
     @Autowired
     private TtlScheduler scheduler;
@@ -56,7 +57,6 @@ public class AgamottoDiscoveryClient implements DiscoveryClient {
     }
 
 
-
     @Override
     public List<String> getServices() {
         if (services != null) {
@@ -68,7 +68,7 @@ public class AgamottoDiscoveryClient implements DiscoveryClient {
 
     public List<String> getRemoteServices() {
         try {
-            RMap<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":list");
+            RMap<String, String> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + agamottoServiceInstance.getEnv() + ":" + "list");
             if (instanceMap == null || !instanceMap.isExists()) {
                 return new ArrayList<>();
             }
@@ -79,9 +79,10 @@ public class AgamottoDiscoveryClient implements DiscoveryClient {
             throw new RuntimeException(e);
         }
     }
+
     private List<ServiceInstance> getRemoteInstances(String serviceId) {
         try {
-            RMap<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + ":" + serviceId);
+            RMap<String, AgamottoServiceInstance> instanceMap = redissonClient.getMap(Constant.DISCOVER_PREFIX_KEY + agamottoServiceInstance.getEnv() + ":"+ serviceId);
             if (instanceMap == null || !instanceMap.isExists()) {
                 return new ArrayList<>();
             }

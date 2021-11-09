@@ -43,6 +43,11 @@
 			<version>0.2.5</version><!--agamotto版本-->
 		</dependency>
 
+		<dependency>
+			<groupId>org.agamotto.cloud</groupId>
+			<artifactId>agamotto-grpc</artifactId>
+			<version>0.2.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>

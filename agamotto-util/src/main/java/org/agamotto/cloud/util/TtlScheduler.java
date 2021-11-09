@@ -31,21 +31,20 @@ public class TtlScheduler {
 
     private final TaskScheduler scheduler = new ConcurrentTaskScheduler(Executors.newSingleThreadScheduledExecutor());
 
-    private final Map<String, ScheduledFuture> serviceHeartbeats = new ConcurrentHashMap<>();
+    private final Map<String, ScheduledFuture<?>> serviceHeartbeats = new ConcurrentHashMap<>();
 
 
 
     public void add(String runnableName, Runnable runnable) {
-        ScheduledFuture task = this.scheduler.scheduleAtFixedRate(runnable, Duration.ofSeconds(30));
-        ScheduledFuture previousTask = this.serviceHeartbeats.put(runnableName, task);
-
+        ScheduledFuture<?> task = this.scheduler.scheduleAtFixedRate(runnable, Duration.ofSeconds(30));
+        ScheduledFuture<?> previousTask = this.serviceHeartbeats.put(runnableName, task);
         if (previousTask != null) {
             previousTask.cancel(true);
         }
     }
 
     public void remove(String runnableName) {
-        ScheduledFuture task = this.serviceHeartbeats.get(runnableName);
+        ScheduledFuture<?> task = this.serviceHeartbeats.get(runnableName);
         if (task != null) {
             task.cancel(true);
         }

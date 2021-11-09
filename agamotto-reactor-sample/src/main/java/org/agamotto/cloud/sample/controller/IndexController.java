@@ -3,9 +3,9 @@ package org.agamotto.cloud.sample.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.agamotto.cloud.discovery.reactive.AgamottoReactiveDiscoveryClient;
-import org.agamotto.cloud.sample.exception.SampleError;
 import org.agamotto.cloud.resp.AgamottoResponse;
 import org.agamotto.cloud.resp.Ret;
+import org.agamotto.cloud.sample.exception.SampleError;
 import org.agamotto.cloud.sample.status.SampleStatus;
 import org.agamotto.cloud.status.StatusUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +35,7 @@ public class IndexController {
 
     @GetMapping("/services")
     public Mono<Ret<?>> getServices() {
+        //ErrorWebFluxAutoConfiguration;
         return discoveryClient.getServices().collectList().map(AgamottoResponse::ok);
     }
 

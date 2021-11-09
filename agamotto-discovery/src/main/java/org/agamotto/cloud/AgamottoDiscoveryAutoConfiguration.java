@@ -25,7 +25,6 @@ import org.springframework.core.env.Environment;
 public class AgamottoDiscoveryAutoConfiguration {
 
 
-
     @Bean
     public AgamottoServiceInstance agamottoServiceInstance(Environment environment, ServerProperties serverProperties, InetUtils inetUtils) {
         //实例化当前服务实例
@@ -33,7 +32,11 @@ public class AgamottoDiscoveryAutoConfiguration {
         agamottoServiceInstance.setServiceId(ServiceUtils.getServiceName(environment));
         agamottoServiceInstance.setEnv(ServiceUtils.getServiceEnv(environment));
         agamottoServiceInstance.setHost(inetUtils.findFirstNonLoopbackHostInfo().getIpAddress());
-        agamottoServiceInstance.setPort(serverProperties.getPort());
+        if (serverProperties.getPort() != null) {
+            agamottoServiceInstance.setPort(serverProperties.getPort());
+        } else {
+            agamottoServiceInstance.setPort(8080);
+        }
         agamottoServiceInstance.setInstanceId(agamottoServiceInstance.getServiceId() + ":" + agamottoServiceInstance.getHost() + ":" + agamottoServiceInstance.getPort());
         return agamottoServiceInstance;
     }

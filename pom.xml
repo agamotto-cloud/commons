@@ -20,6 +20,7 @@
         <module>agamotto-reactor-starter</module>
         <module>agamotto-web</module>
         <module>agamotto-webflux</module>
+        <module>agamotto-grpc</module>
     </modules>
 
 

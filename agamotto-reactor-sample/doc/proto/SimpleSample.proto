@@ -1,22 +1,21 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "net.devh.boot.grpc.examples.lib";
-option java_outer_classname = "HelloWorldProto";
+option java_package = "org.agamotto.cloud.sample.grpc.proto";
+option java_outer_classname = "SampleGrpc";
 
 // The greeting service definition.
-service Simple {
+service SimpleSample {
     // Sends a greeting
-    rpc SayHello (HelloRequest) returns (HelloReply) {
-    }
+    rpc SayHello (SimpleSampleRequest) returns (SimpleSampleReply);
 }
 
 // The request message containing the user's name.
-message HelloRequest {
+message SimpleSampleRequest {
     string name = 1;
 }
 
 // The response message containing the greetings
-message HelloReply {
+message SimpleSampleReply {
     string message = 1;
 }

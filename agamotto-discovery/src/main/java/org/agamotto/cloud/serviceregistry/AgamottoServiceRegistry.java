@@ -90,7 +90,7 @@ public class AgamottoServiceRegistry implements ServiceRegistry<AgamottoServiceI
 
     @Override
     public void close() {
-        log.info("关闭");
+
     }
 
     @Override

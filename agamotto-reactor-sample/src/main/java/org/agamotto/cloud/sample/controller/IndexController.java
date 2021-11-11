@@ -6,6 +6,7 @@ import org.agamotto.cloud.discovery.reactive.AgamottoReactiveDiscoveryClient;
 import org.agamotto.cloud.resp.AgamottoResponse;
 import org.agamotto.cloud.resp.Ret;
 import org.agamotto.cloud.sample.exception.SampleError;
+import org.agamotto.cloud.sample.rpc.SampleRpcClient;
 import org.agamotto.cloud.sample.status.SampleStatus;
 import org.agamotto.cloud.status.StatusUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,15 @@ public class IndexController {
     @GetMapping("/status")
     public Mono<Ret<Map<?, ?>>> getStatus() {
         return AgamottoResponse.okReactive(StatusUtils.getAll(SampleStatus.class));
+    }
+
+    @Autowired
+    private SampleRpcClient sampleRpcClient;
+
+    @GetMapping("/rpc")
+    public Mono<Ret<String>> handleRpc(@RequestParam("msg") String msg) {
+        return AgamottoResponse.okReactive(sampleRpcClient.callService(msg));
+
     }
 }
 

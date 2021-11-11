@@ -14,3 +14,6 @@ spring:
 property.from.sample.custom.source: adasdasd23232111111111111111111111111111111111111111111
   #config:
    #import: optional:agamotto-cloud:xx
+logging:
+  level:
+    org.agamotto: debug

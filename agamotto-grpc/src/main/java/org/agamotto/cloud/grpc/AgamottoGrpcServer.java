@@ -7,11 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.agamotto.cloud.exception.AgamottoDefaultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Slf4j
 public class AgamottoGrpcServer implements SmartLifecycle {
@@ -23,6 +26,9 @@ public class AgamottoGrpcServer implements SmartLifecycle {
 
     @Autowired(required = false)
     private List<BindableService> bindableServiceList;
+    @Autowired
+    private DiscoveryClient discoveryClient;
+    private ThreadPoolExecutor executorService;
 
     @Override
     public void start() {
@@ -35,6 +41,7 @@ public class AgamottoGrpcServer implements SmartLifecycle {
             serverBuilder.addService(bindableService);
             log.info("addService: {}", bindableService.getClass().getSimpleName());
         }
+        serverBuilder = serverBuilder.executor(Executors.newSingleThreadScheduledExecutor());
         try {
             server = serverBuilder.build().start();
             log.info("grpc服务已启动 port {}", server.getPort());

@@ -32,7 +32,17 @@ public class AgamottoResponse {
         return Mono.just(ret);
     }
 
+    public static <T> Mono<Ret<T>> okReactive(Mono<T> data) {
+        return data.map(res -> {
+            Ret<T> ret = new Ret<>();
+            ret.setData(res);
+            ret.setMsg("ok");
+            ret.setSuccess(true);
+            ret.setStatusCode(200);
+            return ret;
+        });
 
+    }
 
 
     public static <T> Ret<T> ok(T data, String msg) {

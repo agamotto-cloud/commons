@@ -26,7 +26,7 @@ public class SampleRpc extends SimpleSampleGrpc.SimpleSampleImplBase {
     @Override
     public void sayHello(SimpleSampleRequest request, StreamObserver<SimpleSampleReply> responseObserver) {
 
-        log.info("say:{}", request.getName());
+     //   log.info("say:{}", request.getName());
 
         Mono<String> mono = Mono.just(request.getName());
 

@@ -11,12 +11,8 @@ import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.config.ConfigDataLocationResolverContext;
-import org.springframework.boot.context.properties.bind.Bindable;
-import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
 
 import java.util.Base64;
 
@@ -70,6 +66,8 @@ public class AgamottoUtilConfiguration {
         Config config = new Config();
         SingleServerConfig builder = config.useSingleServer().setAddress("redis://api.agamotto.cloud:8082");
         builder.setPassword(new String(Base64.getDecoder().decode(ppss)));
+        builder.setConnectionPoolSize(3);
+        builder.setConnectionMinimumIdleSize(2);
         config.setCodec(JsonJacksonCodec.INSTANCE);
         return config;
     }

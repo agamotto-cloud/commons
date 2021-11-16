@@ -31,6 +31,7 @@ public class IndexController {
 
     @PostConstruct
     public void init() {
+        log.info("123");
         log.info("{}", source);
     }
 

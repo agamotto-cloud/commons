@@ -68,7 +68,11 @@ public class AgamottoUtilConfiguration {
         builder.setPassword(new String(Base64.getDecoder().decode(ppss)));
         builder.setConnectionPoolSize(3);
         builder.setConnectionMinimumIdleSize(2);
+        builder.setSubscriptionConnectionMinimumIdleSize(2);
+        builder.setSubscriptionConnectionPoolSize(3);
         config.setCodec(JsonJacksonCodec.INSTANCE);
+        config.setNettyThreads(3);
+        config.setThreads(3);
         return config;
     }
 

@@ -12,14 +12,20 @@ import reactor.core.publisher.Mono;
 public class SampleRpcClient {
 
     @Autowired
-    private SimpleSampleGrpc.SimpleSampleStub helloService = null;
+    private SimpleSampleGrpc.SimpleSampleStub helloService;
 
+    @Autowired
+    private SimpleSampleGrpc.SimpleSampleBlockingStub helloBlockService;
 
 
     public Mono<String> callService(String name) {
         SimpleSampleRequest request = SimpleSampleRequest.newBuilder().setName(name).build();
-        return CallUtils.callServer(helloService::sayHello, request).next().map(SimpleSampleReply::getMessage);
+        return CallUtils.callServer(helloService::sayHello, request).map(SimpleSampleReply::getMessage);
     }
 
+    public String callBlockService(String name) {
+        SimpleSampleRequest request = SimpleSampleRequest.newBuilder().setName(name).build();
+        return helloBlockService.sayHello(request).getMessage();
+    }
 
 }

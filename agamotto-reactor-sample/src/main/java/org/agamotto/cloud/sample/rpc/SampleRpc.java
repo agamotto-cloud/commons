@@ -8,14 +8,17 @@ import org.agamotto.cloud.sample.grpc.proto.SimpleSampleRequest;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
+
+import javax.annotation.Resource;
 
 @Slf4j
 @Service
 public class SampleRpc extends SimpleSampleGrpc.SimpleSampleImplBase {
 
-    private Scheduler publishScheduler = Schedulers.newParallel("grpc-request-handle");
-    private Scheduler subscribeScheduler = Schedulers.newParallel("grpc-result-handle");
+    @Resource
+    private Scheduler publishScheduler;
+    @Resource
+    private Scheduler subscribeScheduler;
 
     /**
      * 如同http的controller
@@ -26,8 +29,7 @@ public class SampleRpc extends SimpleSampleGrpc.SimpleSampleImplBase {
     @Override
     public void sayHello(SimpleSampleRequest request, StreamObserver<SimpleSampleReply> responseObserver) {
 
-     //   log.info("say:{}", request.getName());
-
+        //todo
         Mono<String> mono = Mono.just(request.getName());
 
         mono.publishOn(publishScheduler).subscribeOn(subscribeScheduler).

@@ -16,14 +16,13 @@ public class MemoryStatusActor implements SmartLifecycle {
 
     @Override
     public void start() {
-        log.info("xxx");
         runFlag = true;
         xx = new Thread(() -> {
             while (runFlag) {
                 ThreadGroup parentThread;
                 for (parentThread = Thread.currentThread().getThreadGroup(); parentThread
-                        .getParent() != null; parentThread = parentThread.getParent())
-                    ;
+                        .getParent() != null; parentThread = parentThread.getParent()) {
+                }
                 log.info("线程总数：{},内存:maxMemory:{}MB freeMemory:{}MB totalMemory:{}MB", parentThread.activeCount(),
                         DataSize.ofBytes(Runtime.getRuntime().maxMemory()).toMegabytes(),
                         DataSize.ofBytes(Runtime.getRuntime().freeMemory()).toMegabytes(),
@@ -31,7 +30,7 @@ public class MemoryStatusActor implements SmartLifecycle {
 
                 try {
                     Thread.sleep(5000);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
 
@@ -44,7 +43,10 @@ public class MemoryStatusActor implements SmartLifecycle {
     public void stop() {
         log.info("结束");
         this.runFlag = false;
-        xx.interrupt();
+        try {
+            xx.interrupt();
+        } catch (Exception ignored) {
+        }
     }
 
 
